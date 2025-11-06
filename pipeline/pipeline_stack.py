@@ -33,12 +33,12 @@ class PipelineStack(Stack):
                 input=source,
                 commands=[
                     "python -m venv .venv",
-                    "if [ -f .venv/bin/activate ]; then source .venv/bin/activate; fi",
+                    ". .venv/bin/activate || true",
                     "pip install -r requirements.txt",
                     "npm i -g aws-cdk",
                     "cdk synth"
                 ],
-                primary_output_directory="pipeline/cdk.out"
+                primary_output_directory="cdk.out"
             ),
             cross_account_keys=False,
         )
