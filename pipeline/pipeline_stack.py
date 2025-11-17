@@ -3,7 +3,7 @@ import aws_cdk as cdk
 from aws_cdk import Stack, pipelines
 from app.app_stack import AppStack
 
-GITHIB_OWNER = "Indra333"
+GITHUB_OWNER = "Indra333"
 GITHUB_REPO = "myCDKDemoAppPython"
 GITHUB_BRANCH = "main"
 CONNECTION_ARN = "arn:aws:codeconnections:us-east-1:390844746867:connection/fcf10cdf-06f1-49a0-8953-4e1ed84a8363"
@@ -20,7 +20,7 @@ class PipelineStack(Stack):
         super().__init__(scope, id, **kwargs)
 
         source = pipelines.CodePipelineSource.connection(
-            repo_string=f"{GITHIB_OWNER}/{GITHUB_REPO}",
+            repo_string=f"{GITHUB_OWNER}/{GITHUB_REPO}",
             branch=GITHUB_BRANCH,
             connection_arn=CONNECTION_ARN
         )
@@ -33,7 +33,7 @@ class PipelineStack(Stack):
                 input=source,
                 commands=[
                     "python -m venv .venv",
-                    ". .venv/bin/activate || true",
+                    "if [ -f .venv/bin/activate ]; then . .venv/bin/activate; fi",
                     "pip install -r requirements.txt",
                     "npm i -g aws-cdk",
                     "cdk synth"
